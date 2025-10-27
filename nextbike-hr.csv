@@ -1,0 +1,17 @@
+stanica_id,naziv,adresa,kapacitet,geo_lat,geo_lon,aktivna,datum_posljednje_aktivnosti,bicikl_id,status,tip,zadnje_koristenje
+21207,Autobusni kolodvor,Trg Luke Botica 1,16,45.804,15.994,t,2025-10-26,,,,
+21220,Green gold,Radnicka cesta 50,20,45.803,16.002,t,2025-10-26,,,,
+21235,Nacionalna i sveucilisna knjiznica,Ulica Hrvatske bratske zajednice 4,20,45.797,15.978,t,2025-10-26,,,,
+21237,Arena Zagreb,Ulica Vice Vukova 6,16,45.77,15.935,t,2025-10-19,,,,
+21267,Kruge,Kruge 5,10,45.798,15.987,t,2025-10-26,,,,
+21268,SC Trnje,Ulica grada Vukovara 236D,10,45.798,15.993,t,2025-10-26,,,,
+21269,TC Savica,Lastovska ulica 2A,10,45.794,15.977,t,2025-10-26,800187,dostupan,Smartbike 2.0 armiert,2025-10-25
+21269,TC Savica,Lastovska ulica 2A,10,45.794,15.977,t,2025-10-26,800312,dostupan,Smartbike 2.0 armiert,2025-10-25
+21269,TC Savica,Lastovska ulica 2A,10,45.794,15.977,t,2025-10-26,800485,dostupan,Bicikl s djecjom sjedalicom,2025-10-25
+21269,TC Savica,Lastovska ulica 2A,10,45.794,15.977,t,2025-10-26,800252,iznajmljen,Smartbike 2.0 armiert,2025-10-24
+21269,TC Savica,Lastovska ulica 2A,10,45.794,15.977,t,2025-10-26,800324,servis,Smartbike 2.0 armiert,2025-10-22
+21269,TC Savica,Lastovska ulica 2A,10,45.794,15.977,t,2025-10-26,800432,iznajmljen,Smartbike 2.0 armiert,2025-10-24
+21269,TC Savica,Lastovska ulica 2A,10,45.794,15.977,t,2025-10-26,800264,dostupan,Smartbike 2.0 armiert,2025-10-25
+21282,Ulica grada Chicaga,Ulica grada Chicaga,10,45.786,16.006,t,2025-10-26,,,,
+21313,Lastovska ulica,Lastovska ulica 38,10,45.791,15.999,t,2025-10-26,,,,
+21316,Ulica Milke Trnina,Ulica Milke Trnina 11a,10,45.793,16.005,t,2025-10-26,,,,
