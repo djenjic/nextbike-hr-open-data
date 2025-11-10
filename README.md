@@ -65,12 +65,7 @@ Svaka stanica može imati više bicikala, dok svaki bicikl pripada točno jednoj
 
 Podaci su dostupni u dva formata:
 
-- **`stanice.csv`** – tablični zapis stanica  
-- **`bicikli.csv`** – tablični zapis bicikala  
-- **`stanice.json`** – hijerarhijski JSON prikaz gdje svaka stanica sadrži listu bicikala
-
-
-
-## 📎 Datoteke u repozitoriju
+- **`nextbike-hr.csv`** – zapis stanica i bicikala u csv formatu 
+- **`nextbike-hr.json`** – zapis stanica i bicikala u json formatu  
 
 
