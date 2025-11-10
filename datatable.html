@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregled podataka - Nextbike Zagreb</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-size: 2em;
+        }
+        
+        .back-btn {
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .controls {
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .filter-form {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-export {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .btn-export:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .info-bar {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-dostupan {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-iznajmljen {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-servis {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .boolean-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .boolean-true {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .boolean-false {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚲 Pregled podataka - Nextbike Zagreb</h1>
+            <a href="index.html" class="back-btn">← Natrag</a>
+        </header>
+        
+        <div class="controls">
+            <div class="filter-form">
+                <div class="form-group" style="flex: 2;">
+                    <label for="search">Pretraživanje</label>
+                    <input type="text" id="search" placeholder="Unesite pojam za pretragu...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="attribute">Atribut</label>
+                    <select id="attribute">
+                        <option value="all">Svi atributi</option>
+                        <option value="naziv">Naziv stanice</option>
+                        <option value="adresa">Adresa</option>
+                        <option value="id">ID stanice</option>
+                        <option value="kapacitet">Kapacitet</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary" onclick="filterData()">🔍 Filtriraj</button>
+                <button class="btn btn-secondary" onclick="resetFilter()">↺ Poništi</button>
+            </div>
+            
+            <div class="export-buttons">
+                <a href="#" class="btn-export" id="exportCsv">💾 Preuzmi CSV</a>
+                <a href="#" class="btn-export" id="exportJson">💾 Preuzmi JSON</a>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="info-bar">
+                <div>
+                    <strong>Broj redaka:</strong> <span id="recordCount">0</span>
+                </div>
+                <div id="filterInfo"></div>
+            </div>
+            
+            <div id="loading" class="loading" style="display: none;">
+                Učitavanje podataka...
+            </div>
+            
+            <div id="error" class="error" style="display: none;"></div>
+            
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>ID Stanice</th>
+                            <th>Naziv</th>
+                            <th>Adresa</th>
+                            <th>Kapacitet</th>
+                            <th>Lat</th>
+                            <th>Lon</th>
+                            <th>Aktivna</th>
+                            <th>Datum ažuriranja</th>
+                            <th>ID Bicikla</th>
+                            <th>Status</th>
+                            <th>Tip</th>
+                            <th>Zadnje korištenje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        
+        // Učitaj podatke pri učitavanju stranice
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+        });
+        
+        // Enter key za pretragu
+        document.getElementById('search').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                filterData();
+            }
+        });
+        
+        async function loadData(search = '', attribute = 'all') {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const tableBody = document.getElementById('tableBody');
+            const recordCount = document.getElementById('recordCount');
+            const filterInfo = document.getElementById('filterInfo');
+            
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            tableBody.innerHTML = '';
+            
+            try {
+                const params = new URLSearchParams();
+                if (search) params.append('search', search);
+                if (attribute) params.append('attribute', attribute);
+                
+                const response = await fetch(`${API_URL}/data?${params}`);
+                
+                if (!response.ok) {
+                    throw new Error('Greška pri dohvaćanju podataka');
+                }
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Nepoznata greška');
+                }
+                
+                const data = result.data;
+                recordCount.textContent = data.length;
+                
+                if (search) {
+                    filterInfo.innerHTML = `<em>Filtrirano po: ${attribute === 'all' ? 'svi atributi' : attribute} = "${search}"</em>`;
+                } else {
+                    filterInfo.innerHTML = '';
+                }
+                
+                if (data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 40px;">Nema podataka za prikaz</td></tr>';
+                } else {
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.stanica_id}</td>
+                            <td><strong>${row.naziv}</strong></td>
+                            <td>${row.adresa}</td>
+                            <td>${row.kapacitet}</td>
+                            <td>${row.geo_lat}</td>
+                            <td>${row.geo_lon}</td>
+                            <td><span class="boolean-badge ${row.aktivna ? 'boolean-true' : 'boolean-false'}">${row.aktivna ? 'DA' : 'NE'}</span></td>
+                            <td>${row.datum_posljednje_aktivnosti || '-'}</td>
+                            <td>${row.bicikl_id || '-'}</td>
+                            <td>${row.status ? `<span class="status-badge status-${row.status}">${row.status}</span>` : '-'}</td>
+                            <td>${row.tip || '-'}</td>
+                            <td>${row.zadnje_koristenje || '-'}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                }
+                
+                // Update export links
+                updateExportLinks(search, attribute);
+                
+            } catch (err) {
+                console.error('Error:', err);
+                error.textContent = `Greška: ${err.message}`;
+                error.style.display = 'block';
+                recordCount.textContent = '0';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        function filterData() {
+            const search = document.getElementById('search').value.trim();
+            const attribute = document.getElementById('attribute').value;
+            loadData(search, attribute);
+        }
+        
+        function resetFilter() {
+            document.getElementById('search').value = '';
+            document.getElementById('attribute').value = 'all';
+            loadData();
+        }
+        
+        function updateExportLinks(search, attribute) {
+            const params = new URLSearchParams();
+            if (search) params.append('search', search);
+            if (attribute) params.append('attribute', attribute);
+            
+            document.getElementById('exportCsv').href = `${API_URL}/export/csv?${params}`;
+            document.getElementById('exportJson').href = `${API_URL}/export/json?${params}`;
+        }
+    </script>
+</body>
+</html>

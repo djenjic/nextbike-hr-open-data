@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nextbike stanice i bicikli u Zagrebu - otvoreni skup podataka">
+    <meta name="author" content="Domagoj Jenjić">
+    <meta name="keywords" content="nextbike, zagreb, bicikli, otvoreni podaci, open data">
+    <title>Nextbike stanice i bicikli u Zagrebu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .metadata-table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .metadata-table th,
+        .metadata-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .metadata-table th {
+            background-color: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .metadata-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .attributes {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .attributes h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+        
+        .attributes ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .attributes li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .attributes li:last-child {
+            border-bottom: none;
+        }
+        
+        .attributes strong {
+            color: #667eea;
+            display: inline-block;
+            width: 250px;
+        }
+        
+        .download-links {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .download-links a {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .download-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .view-data-btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin: 30px 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+        
+        .view-data-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.5);
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚲 Nextbike stanice i bicikli u Zagrebu</h1>
+            <p>Otvoreni skup podataka izrađen u sklopu kolegija Otvoreno računarstvo</p>
+        </header>
+        
+        <div class="content">
+            <section>
+                <h2>📖 O skupu podataka</h2>
+                <p>Ovaj skup podataka prikazuje javne Nextbike stanice i bicikle u gradu Zagrebu. Podaci uključuju lokacije stanica, kapacitete, trenutni broj dostupnih bicikala te osnovne informacije o samim biciklima. Skup podataka izrađen je u sklopu kolegija <strong>Otvoreno računarstvo</strong> na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu.</p>
+                
+                <p>Cilj skupa podataka je omogućiti jednostavan pregled javnih Nextbike stanica u Zagrebu te povezati bicikle s pripadajućim stanicama. Svaka stanica može imati više bicikala, dok svaki bicikl pripada točno jednoj stanici.</p>
+            </section>
+            
+            <section>
+                <h2>📊 Metapodaci</h2>
+                <table class="metadata-table">
+                    <tr>
+                        <th>Ključ</th>
+                        <th>Vrijednost</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Naziv skupa podataka</strong></td>
+                        <td>Nextbike stanice i bicikli u Zagrebu</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Autor</strong></td>
+                        <td>Domagoj Jenjić</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Verzija</strong></td>
+                        <td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jezik</strong></td>
+                        <td>Hrvatski</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Format datoteka</strong></td>
+                        <td>CSV, JSON</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Baza podataka</strong></td>
+                        <td>PostgreSQL</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Odnos entiteta</strong></td>
+                        <td>1:N (jedna stanica ima više bicikala)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Licenca</strong></td>
+                        <td>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Izvor podataka</strong></td>
+                        <td>Javne informacije o sustavu Nextbike Hrvatska</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Broj stanica</strong></td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Broj bicikala</strong></td>
+                        <td>7</td>
+                    </tr>
+                </table>
+            </section>
+            
+            <section>
+                <h2>🏗️ Struktura podataka</h2>
+                
+                <div class="attributes">
+                    <h3>Tablica: stanice</h3>
+                    <ul>
+                        <li><strong>id</strong> - Jedinstveni identifikator stanice</li>
+                        <li><strong>naziv</strong> - Naziv stanice</li>
+                        <li><strong>adresa</strong> - Lokacija stanice</li>
+                        <li><strong>kapacitet</strong> - Maksimalni broj bicikala koje stanica može primiti</li>
+                        <li><strong>geo_lat</strong> - Geografska širina</li>
+                        <li><strong>geo_lon</strong> - Geografska dužina</li>
+                        <li><strong>aktivna</strong> - Status stanice (TRUE/FALSE)</li>
+                        <li><strong>datum_posljednje_aktivnosti</strong> - Datum zadnje provjere podataka</li>
+                    </ul>
+                </div>
+                
+                <div class="attributes">
+                    <h3>Tablica: bicikli</h3>
+                    <ul>
+                        <li><strong>id</strong> - Jedinstveni identifikator bicikla</li>
+                        <li><strong>status</strong> - Trenutno stanje bicikla (dostupan, iznajmljen, servis)</li>
+                        <li><strong>tip</strong> - Vrsta bicikla (klasični, s dječjom sjedalicom)</li>
+                        <li><strong>zadnje_koristenje</strong> - Datum posljednje vožnje</li>
+                        <li><strong>stanica_id</strong> - ID stanice kojoj bicikl trenutno pripada</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <strong>ℹ️ Odnos entiteta:</strong> Svaka stanica može imati više bicikala. Svaki bicikl pripada točno jednoj stanici (odnos 1:N).
+                </div>
+            </section>
+            
+            <section>
+                <h2>💾 Preuzimanje podataka</h2>
+                <p>Cjelokupni skup podataka dostupan je u sljedećim formatima:</p>
+                <div class="download-links">
+                    <a href="nextbike-hr.json" download>📄 Preuzmi JSON</a>
+                    <a href="nextbike-hr.csv" download>📊 Preuzmi CSV</a>
+                    <a href="schema.json" download>📋 Preuzmi JSON Schema</a>
+                </div>
+            </section>
+            
+            <section style="text-align: center;">
+                <a href="datatable.html" class="view-data-btn">🔍 Pregledaj i filtriraj podatke</a>
+            </section>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Domagoj Jenjić | Otvoreno računarstvo | FER</p>
+            <p>Licenca: CC BY-NC-SA 4.0</p>
+        </footer>
+    </div>
+</body>
+</html>

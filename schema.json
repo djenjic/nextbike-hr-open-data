@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/domagojjenjic/OR-labos/nextbike-hr.json",
+  "type": "object",
+  "title": "Nextbike stanica",
+  "description": "Objekt koji sadrži sve podatke o jednoj Nextbike stanici u Zagrebu zajedno s pripadajućim biciklima.",
+  "required": [
+    "id",
+    "naziv",
+    "adresa",
+    "kapacitet",
+    "geo_lat",
+    "geo_lon",
+    "aktivna",
+    "datum_posljednje_aktivnosti",
+    "bicikli"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "title": "ID stanice",
+      "description": "Jedinstveni identifikator Nextbike stanice."
+    },
+    "naziv": {
+      "type": "string",
+      "title": "Naziv stanice",
+      "description": "Naziv lokacije Nextbike stanice."
+    },
+    "adresa": {
+      "type": "string",
+      "title": "Adresa",
+      "description": "Puna adresa lokacije stanice."
+    },
+    "kapacitet": {
+      "type": "integer",
+      "title": "Kapacitet stanice",
+      "description": "Maksimalni broj bicikala koje stanica može primiti.",
+      "minimum": 0
+    },
+    "geo_lat": {
+      "type": "number",
+      "title": "Geografska širina",
+      "description": "Geografska širina lokacije stanice (latitude).",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "geo_lon": {
+      "type": "number",
+      "title": "Geografska dužina",
+      "description": "Geografska dužina lokacije stanice (longitude).",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "aktivna": {
+      "type": "boolean",
+      "title": "Status aktivnosti",
+      "description": "Označava je li stanica trenutno aktivna (true) ili neaktivna (false)."
+    },
+    "datum_posljednje_aktivnosti": {
+      "type": "string",
+      "title": "Datum posljednje aktivnosti",
+      "description": "Datum zadnje provjere ili ažuriranja podataka stanice u formatu YYYY-MM-DD.",
+      "format": "date"
+    },
+    "bicikli": {
+      "type": "array",
+      "title": "Bicikli",
+      "description": "Lista bicikala koji se trenutno nalaze na ovoj stanici.",
+      "items": {
+        "type": "object",
+        "title": "Bicikl",
+        "description": "Objekt koji sadrži podatke o jednom biciklu.",
+        "required": [
+          "id",
+          "status",
+          "tip",
+          "zadnje_koristenje"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "ID bicikla",
+            "description": "Jedinstveni identifikator bicikla."
+          },
+          "status": {
+            "type": "string",
+            "title": "Status bicikla",
+            "description": "Trenutno stanje bicikla (dostupan, iznajmljen, servis).",
+            "enum": ["dostupan", "iznajmljen", "servis"]
+          },
+          "tip": {
+            "type": "string",
+            "title": "Tip bicikla",
+            "description": "Vrsta bicikla (npr. Smartbike 2.0 armiert, Bicikl s dječjom sjedalicom)."
+          },
+          "zadnje_koristenje": {
+            "type": "string",
+            "title": "Datum posljednjeg korištenja",
+            "description": "Datum zadnje vožnje u formatu YYYY-MM-DD.",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}
