@@ -1,0 +1,776 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Nextbike Zagreb API",
+    "description": "REST API za upravljanje Nextbike stanicama i biciklima u Zagrebu. API omogućava dohvaćanje, kreiranje, ažuriranje i brisanje podataka o stanicama i biciklima.",
+    "version": "3.0.0",
+    "contact": {
+      "name": "Domagoj Jenjić",
+      "email": "domagoj.jenjic@fer.hr"
+    },
+    "license": {
+      "name": "CC BY-NC-SA 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Stanice",
+      "description": "Operacije nad Nextbike stanicama"
+    },
+    {
+      "name": "Bicikli",
+      "description": "Operacije nad biciklima"
+    },
+    {
+      "name": "System",
+      "description": "Sistemski endpointi"
+    }
+  ],
+  "paths": {
+    "/stanice": {
+      "get": {
+        "tags": ["Stanice"],
+        "summary": "Dohvaćanje svih stanica",
+        "description": "Vraća listu svih Nextbike stanica u Zagrebu",
+        "responses": {
+          "200": {
+            "description": "Uspješno dohvaćene stanice",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStanice"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška na serveru",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Stanice"],
+        "summary": "Kreiranje nove stanice",
+        "description": "Dodaje novu Nextbike stanicu u bazu podataka",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StanicaInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Stanica uspješno kreirana",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStanica"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nevaljani podaci",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stanice/{id}": {
+      "get": {
+        "tags": ["Stanice"],
+        "summary": "Dohvaćanje pojedinačne stanice",
+        "description": "Vraća podatke o jednoj stanici zajedno s biciklima",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID stanice",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Uspješno dohvaćena stanica",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStanica"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nevaljani ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Stanica nije pronađena",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Stanice"],
+        "summary": "Ažuriranje stanice",
+        "description": "Ažurira podatke postojeće stanice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID stanice",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StanicaInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stanica uspješno ažurirana",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStanica"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Stanica nije pronađena",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Stanice"],
+        "summary": "Brisanje stanice",
+        "description": "Briše stanicu iz baze podataka zajedno sa svim pripadajućim biciklima",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID stanice",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stanica uspješno obrisana",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "OK" },
+                    "message": { "type": "string", "example": "Station successfully deleted" },
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "deleted_id": { "type": "integer", "example": 21269 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Stanica nije pronađena",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stanice/{id}/bicikli": {
+      "get": {
+        "tags": ["Stanice"],
+        "summary": "Dohvaćanje bicikala na stanici",
+        "description": "Vraća sve bicikle koji se nalaze na određenoj stanici",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID stanice",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Uspješno dohvaćeni bicikli",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBicikli"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Stanica nije pronađena"
+          }
+        }
+      }
+    },
+    "/stanice/aktivne/{status}": {
+      "get": {
+        "tags": ["Stanice"],
+        "summary": "Dohvaćanje stanica po statusu",
+        "description": "Vraća aktivne ili neaktivne stanice",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Status aktivnosti (true ili false)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false", "1", "0"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Uspješno dohvaćene stanice",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStanice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stanice/grad/{lokacija}": {
+      "get": {
+        "tags": ["Stanice"],
+        "summary": "Pretraga stanica po lokaciji",
+        "description": "Pretražuje stanice po nazivu ili adresi",
+        "parameters": [
+          {
+            "name": "lokacija",
+            "in": "path",
+            "description": "Tekst za pretragu",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Uspješno pretražene stanice",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStanice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bicikli": {
+      "get": {
+        "tags": ["Bicikli"],
+        "summary": "Dohvaćanje svih bicikala",
+        "description": "Vraća listu svih bicikala u sustavu",
+        "responses": {
+          "200": {
+            "description": "Uspješno dohvaćeni bicikli",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBicikli"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Bicikli"],
+        "summary": "Kreiranje novog bicikla",
+        "description": "Dodaje novi bicikl u bazu podataka",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BiciklInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bicikl uspješno kreiran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBicikl"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nevaljani podaci"
+          }
+        }
+      }
+    },
+    "/bicikli/{id}": {
+      "get": {
+        "tags": ["Bicikli"],
+        "summary": "Dohvaćanje pojedinog bicikla",
+        "description": "Vraća podatke o jednom biciklu",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID bicikla",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Uspješno dohvaćen bicikl",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBicikl"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bicikl nije pronađen"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Bicikli"],
+        "summary": "Ažuriranje bicikla",
+        "description": "Ažurira podatke postojećeg bicikla",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID bicikla",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BiciklInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bicikl uspješno ažuriran",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBicikl"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bicikl nije pronađen"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Bicikli"],
+        "summary": "Brisanje bicikla",
+        "description": "Briše bicikl iz baze podataka",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID bicikla",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bicikl uspješno obrisan"
+          },
+          "404": {
+            "description": "Bicikl nije pronađen"
+          }
+        }
+      }
+    },
+    "/specification": {
+      "get": {
+        "tags": ["System"],
+        "summary": "Dohvaćanje OpenAPI specifikacije",
+        "description": "Vraća OpenAPI specifikaciju ovog API-ja",
+        "responses": {
+          "200": {
+            "description": "OpenAPI specifikacija",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["System"],
+        "summary": "Health check",
+        "description": "Provjerava je li server aktivan",
+        "responses": {
+          "200": {
+            "description": "Server je aktivan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "OK" },
+                    "message": { "type": "string", "example": "Server is running" },
+                    "response": {
+                      "type": "object",
+                      "properties": {
+                        "uptime": { "type": "number", "example": 12345.67 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Stanica": {
+        "type": "object",
+        "required": ["id", "naziv", "adresa", "kapacitet", "geo_lat", "geo_lon", "aktivna"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Jedinstveni identifikator stanice",
+            "example": 21269
+          },
+          "naziv": {
+            "type": "string",
+            "description": "Naziv stanice",
+            "example": "TC Savica"
+          },
+          "adresa": {
+            "type": "string",
+            "description": "Adresa stanice",
+            "example": "Lastovska ulica 2A"
+          },
+          "kapacitet": {
+            "type": "integer",
+            "description": "Maksimalni broj bicikala",
+            "example": 10
+          },
+          "geo_lat": {
+            "type": "number",
+            "format": "double",
+            "description": "Geografska širina",
+            "example": 45.794
+          },
+          "geo_lon": {
+            "type": "number",
+            "format": "double",
+            "description": "Geografska dužina",
+            "example": 15.977
+          },
+          "aktivna": {
+            "type": "boolean",
+            "description": "Status aktivnosti stanice",
+            "example": true
+          },
+          "datum_posljednje_aktivnosti": {
+            "type": "string",
+            "format": "date",
+            "description": "Datum zadnje aktivnosti",
+            "example": "2025-10-26"
+          },
+          "bicikli": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bicikl"
+            }
+          }
+        }
+      },
+      "StanicaInput": {
+        "type": "object",
+        "required": ["naziv", "adresa", "kapacitet", "geo_lat", "geo_lon"],
+        "properties": {
+          "naziv": {
+            "type": "string",
+            "example": "Novi trg"
+          },
+          "adresa": {
+            "type": "string",
+            "example": "Trg bana Jelačića 1"
+          },
+          "kapacitet": {
+            "type": "integer",
+            "example": 15
+          },
+          "geo_lat": {
+            "type": "number",
+            "example": 45.813
+          },
+          "geo_lon": {
+            "type": "number",
+            "example": 15.978
+          },
+          "aktivna": {
+            "type": "boolean",
+            "example": true
+          },
+          "datum_posljednje_aktivnosti": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-11-10"
+          }
+        }
+      },
+      "Bicikl": {
+        "type": "object",
+        "required": ["id", "status", "tip", "stanica_id"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Jedinstveni identifikator bicikla",
+            "example": 800187
+          },
+          "status": {
+            "type": "string",
+            "enum": ["dostupan", "iznajmljen", "servis"],
+            "description": "Status bicikla",
+            "example": "dostupan"
+          },
+          "tip": {
+            "type": "string",
+            "description": "Tip bicikla",
+            "example": "Smartbike 2.0 armiert"
+          },
+          "zadnje_koristenje": {
+            "type": "string",
+            "format": "date",
+            "description": "Datum zadnjeg korištenja",
+            "example": "2025-10-25"
+          },
+          "stanica_id": {
+            "type": "integer",
+            "description": "ID stanice kojoj bicikl pripada",
+            "example": 21269
+          }
+        }
+      },
+      "BiciklInput": {
+        "type": "object",
+        "required": ["status", "tip", "stanica_id"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["dostupan", "iznajmljen", "servis"],
+            "example": "dostupan"
+          },
+          "tip": {
+            "type": "string",
+            "example": "Smartbike 2.0 armiert"
+          },
+          "zadnje_koristenje": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-11-10"
+          },
+          "stanica_id": {
+            "type": "integer",
+            "example": 21269
+          }
+        }
+      },
+      "ResponseStanice": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "OK"
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully fetched all stations"
+          },
+          "response": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stanica"
+            }
+          }
+        }
+      },
+      "ResponseStanica": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "OK"
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully fetched station"
+          },
+          "response": {
+            "$ref": "#/components/schemas/Stanica"
+          }
+        }
+      },
+      "ResponseBicikli": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "OK"
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully fetched all bikes"
+          },
+          "response": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bicikl"
+            }
+          }
+        }
+      },
+      "ResponseBicikl": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "OK"
+          },
+          "message": {
+            "type": "string",
+            "example": "Successfully fetched bike"
+          },
+          "response": {
+            "$ref": "#/components/schemas/Bicikl"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Error"
+          },
+          "message": {
+            "type": "string",
+            "example": "An error occurred"
+          },
+          "response": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  }
+}

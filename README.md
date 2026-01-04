@@ -66,6 +66,32 @@ Svaka stanica može imati više bicikala, dok svaki bicikl pripada točno jednoj
 Podaci su dostupni u dva formata:
 
 - **`nextbike-hr.csv`** – zapis stanica i bicikala u csv formatu 
-- **`nextbike-hr.json`** – zapis stanica i bicikala u json formatu  
+- **`nextbike-hr.json`** – zapis stanica i bicikala u json formatu
+
+## 🔌 REST API
+
+API je dostupan na `http://localhost:3000/api`
+
+### Glavne krajnje točke:
+
+**Stanice:**
+- `GET /api/stanice` - Dohvaća sve stanice
+- `GET /api/stanice/:id` - Dohvaća pojedinačnu stanicu
+- `POST /api/stanice` - Kreira novu stanicu
+- `PUT /api/stanice/:id` - Ažurira stanicu
+- `DELETE /api/stanice/:id` - Briše stanicu
+- `GET /api/stanice/:id/bicikli` - Dohvaća bicikle na stanici
+- `GET /api/stanice/aktivne/:status` - Dohvaća aktivne/neaktivne stanice
+- `GET /api/stanice/grad/:lokacija` - Pretraga po lokaciji
+
+**Bicikli:**
+- `GET /api/bicikli` - Dohvaća sve bicikle
+- `GET /api/bicikli/:id` - Dohvaća pojedinog bicikla
+- `POST /api/bicikli` - Kreira novi bicikl
+- `PUT /api/bicikli/:id` - Ažurira bicikl
+- `DELETE /api/bicikli/:id` - Briše bicikl
+
+**Dokumentacija:**
+- `GET /api/specification` - OpenAPI specifikacija
 
 
